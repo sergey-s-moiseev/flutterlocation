@@ -114,11 +114,15 @@ public class LocationPlugin implements FlutterPlugin, ActivityAware {
         methodCallHandler.setLocationService(null);
         methodCallHandler.setLocation(null);
 
-        activityBinding.removeRequestPermissionsResultListener(locationService.getServiceRequestPermissionsResultListener());
-        activityBinding.removeRequestPermissionsResultListener(locationService.getLocationRequestPermissionsResultListener());
-        activityBinding.removeActivityResultListener(locationService.getLocationActivityResultListener());
+        try {
+            activityBinding.removeRequestPermissionsResultListener(locationService.getServiceRequestPermissionsResultListener());
+            activityBinding.removeRequestPermissionsResultListener(locationService.getLocationRequestPermissionsResultListener());
+            activityBinding.removeActivityResultListener(locationService.getLocationActivityResultListener());
 
-        locationService.setActivity(null);
+            locationService.setActivity(null);
+        } catch (NullPointerException e) {
+            Log.e(TAG, "Location Service disconnected");
+        }
 
         locationService = null;
     }
